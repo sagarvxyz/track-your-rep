@@ -3,16 +3,19 @@ const webpack = require('webpack');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './ui/index.js',
   mode: 'development',
   output: {
     path: path.resolve(__dirname, 'dist/'),
-    publicPath: 'http://localhost:3000/dist/',
+    publicPath: 'http://localhost:8080/dist/',
     filename:'bundle.js'
   },
   devServer: {
     static: {
       directory: path.join(__dirname, 'public/'),
+    },
+    proxy: {
+      '/api': 'http://localhost:3000'
     },
     port: 8080,
     hot: true
