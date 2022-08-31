@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import { VotingForm } from './votingForm'
+import { Form } from './form';
+import { Bill } from './bill';
 
 const App = (props) => {
   console.log('this is my log of props', props);
@@ -7,7 +8,8 @@ const App = (props) => {
     <Fragment>
       <h1>Track Your Rep</h1>
       <p>Viva la revolucion!</p>
-      <VotingForm/>
+      <Form/>
+      <Bill/>
     </Fragment>
   )
 }

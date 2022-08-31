@@ -22,7 +22,7 @@ initDbController.loadHouseMembers = async (req, res, next) => {
     };
     return next();
   } catch (err) {
-    next({
+    return next({
       log: 'Error: error in initDbController.loadHouseMembers',
       message: err
     });
