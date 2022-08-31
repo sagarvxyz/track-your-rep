@@ -6,6 +6,10 @@ const router = express.Router();
 // router.get('/', (req, res) => {
 //   res.status(200).end();
 // })
+router.get('/bills', dataController.getRecentBills, (req, res) => {
+  console.log('GET /bills route complete');
+  res.status(200).end();
+})
 
 router.get('/votes', dataController.getMemberVotes, (req, res) => {
   console.log('GET /votes route complete');

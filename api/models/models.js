@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 const { Schema, SchemaType } = mongoose;
 const mongoURI = 'mongodb://localhost:27017/track_your_rep';
-// const mongoURI = 'mongodb://nonsensicalhttp';
 mongoose.connect(mongoURI);
 
-// To get all active members of the house, contact info, and their ProPublica IDs
+
 const HouseMemberSchema = new Schema({
   "id": String,
   "title": String,
@@ -53,10 +52,12 @@ const HouseMemberSchema = new Schema({
   "votes_with_party_pct": Number,
   "votes_against_party_pct": Number
 });
+/**
+ * Model for all active members of the house, contact info, and their ProPublica IDs. Built for the proPublica Congress API.
+ */
 const HouseMembers = mongoose.model('houseMembers', HouseMemberSchema);
 
-// get a house member's recent votes.
-// note: currently hardcoded for one rep - AOC id: 'O000172'
+
 const MemberVoteSchema = new Schema({
   member_id: String,
   chamber: String,
@@ -74,9 +75,54 @@ const MemberVoteSchema = new Schema({
   total: Object,
   position: String
 });
+/**
+ * Model for representative's history of votes. Built for the proPublica Congress API. 
+ */
 const MemberVotes = mongoose.model('memberVotes', MemberVoteSchema);
+
+const BillSchema = new Schema({
+  bill_id: String,
+  bill_slug: String,
+  bill_type: String,
+  number: String,
+  bill_uri: String,
+  title: String,
+  short_title: String,
+  sponsor_title: String,
+  sponsor_id: String,
+  sponsor_name: String,
+  sponsor_state: String,
+  sponsor_party: String,
+  sponsor_uri: String,
+  gpo_pdf_uri: String,
+  congressdotgov_url: String,
+  govtrack_url: String,
+  introduced_date: Date,
+  active: Boolean,
+  last_vote: Date,
+  house_passage: Date,
+  senate_passage: Date,
+  enacted: Date,
+  vetoed: Date,
+  cosponsors: Number,
+  cosponsors_by_party: Object,
+  committees: String,
+  comittee_codes: Array,
+  subcomitte_codes: Array,
+  primary_subject: String,
+  summary: String,
+  summary_short: String,
+  latest_major_action_date: Date,
+  latest_major_action: String
+});
+
+/**
+ * Model for recent Bills. Built for the ProPublica Congress API. 
+ */
+const Bills = mongoose.model('bills', BillSchema);
 
 module.exports = {
   HouseMembers,
-  MemberVotes
+  MemberVotes,
+  Bills
 };
