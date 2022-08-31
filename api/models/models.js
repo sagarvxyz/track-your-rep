@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
+const { Schema, SchemaType } = mongoose;
 const mongoURI = 'mongodb://localhost:27017/track_your_rep';
 // const mongoURI = 'mongodb://nonsensicalhttp';
 mongoose.connect(mongoURI);
 
+// To get all active members of the house, contact info, and their ProPublica IDs
 const HouseMemberSchema = new Schema({
   "id": String,
   "title": String,
@@ -52,9 +53,30 @@ const HouseMemberSchema = new Schema({
   "votes_with_party_pct": Number,
   "votes_against_party_pct": Number
 });
+const HouseMembers = mongoose.model('houseMembers', HouseMemberSchema);
 
-const HouseMembers = mongoose.model('HouseMembers', HouseMemberSchema);
+// get a house member's recent votes.
+// note: currently hardcoded for one rep - AOC id: 'O000172'
+const MemberVoteSchema = new Schema({
+  member_id: String,
+  chamber: String,
+  congress: Number,
+  session: Number,
+  roll_call: Number,
+  vot_uri: String,
+  bill: Object,
+  ammendment: Object,
+  description: String,
+  question: String,
+  result: String,
+  date: Date,
+  time: String,
+  total: Object,
+  position: String
+});
+const MemberVotes = mongoose.model('memberVotes', MemberVoteSchema);
 
 module.exports = {
-  HouseMembers
+  HouseMembers,
+  MemberVotes
 };
