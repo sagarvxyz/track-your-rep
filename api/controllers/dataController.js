@@ -4,15 +4,18 @@ const models = require('../models/models.js');
 const dataController = {};
 const apiKey = { 'X-API-Key': 'jwAOJEIpja83U4txD9kLUVSqAWgfHGfplWDtRvLT' };
 
+/**
+ * Function retrieves the latest bill voted on by a specified rep from the database.
+ */
 dataController.serveLatestBill = async (req, res, next) => {
   try {
-    console.log('serveLatestBill called')
-    const latestVote = await models.MemberVotes.findOne();
-    const billId = await latestVote.bill.bill_id;
-    const url = `https://api.propublica.org/congress/v1/bills/search.json?query=${billId}`;
-    const query = await fetch(url, { headers: apiKey });
+    const latestVote = await models.MemberVotes.findOne({},'bill.bill_uri',{
+      $sort: { date: -1 }
+    });
+    const billURI = await latestVote.bill.bill_uri;
+    const query = await fetch(billURI, { headers: apiKey });
     const data = await query.json();
-    const latestBill = await data.results[0].bills[0];
+    const latestBill = await data.results[0];
     res.locals.latestBill = latestBill;
     return next();
   } catch (err) {
@@ -26,11 +29,11 @@ dataController.serveLatestBill = async (req, res, next) => {
 /**
  * Function retrieves recent Bills introduced in the House of Congress. Via ProPublica Congress API: https://projects.propublica.org/api-docs/congress-api/bills/.
  * 
- * DEV NOTE: introduced bills have limited data. Using may want to use a different status for now?
+ * DEV NOTE: introduced bills have limited data. Currently using "passed" bills.
  */
 dataController.getRecentBills = async (req, res, next) => {
   try {
-    const url = 'https://api.propublica.org/congress/v1/117/house/bills/active.json';
+    const url = 'https://api.propublica.org/congress/v1/117/house/bills/passed.json';
     const response = await fetch(url, { headers: apiKey });
     const data = await response.json();
     const bills = data.results[0].bills;

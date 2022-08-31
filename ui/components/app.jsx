@@ -1,17 +1,15 @@
 import React, { Fragment } from 'react';
-import { Form } from './form';
-import { Bill } from './bill';
+import { ActionDisplay } from './actionDisplay';
+import { DataDisplay } from './dataDisplay';
 
 const App = (props) => {
-  console.log('this is my log of props', props);
   return(
-    <Fragment>
+    <div className="app">
       <h1>Track Your Rep</h1>
-      <p>Viva la revolucion!</p>
-      <Form/>
-      <Bill/>
-    </Fragment>
-  )
-}
+      <ActionDisplay/>
+      <DataDisplay/>
+    </div>
+  );
+};
 
 export { App };

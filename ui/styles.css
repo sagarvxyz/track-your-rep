@@ -1,4 +1,42 @@
-.app {
+/* GLOBAL VARIABLES */
+:root {
+  --primary: rgb(30,30,30);
+  --tertiary: rgb(200,200,200);
+}
+html {
+  font-size: 16px;
+}
+body {
   margin: 0;
   font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: var(--primary);
+}
+h1 {
+  grid-area: header;
+}
+/* 1. App */
+.app {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50px 1fr;
+  grid-template-areas:
+  "header   header"
+  "action   display";
+  max-height: 98vh;
+  max-width: 98vw;
+  margin: 1vh 1vw;
+}
+.actionDisplay {
+  grid-area: action;
+}
+.dataDisplay {
+  grid-area: display;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+/* 2. Bill */
+.bill{
+  overflow-wrap:normal;
+  max-width: 100%;
 }
