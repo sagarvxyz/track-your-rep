@@ -4,7 +4,7 @@ import { BillData } from "./billData";
 const DataDisplay = (props) => {
   return(
     <section className="dataDisplay">
-      <BillData/>
+      <BillData activeBill={props.activeBill}/>
     </section>
   );
 };

@@ -4,7 +4,12 @@ import { VotingForm } from "./votingForm";
 const ActionDisplay = (props) => {
   return(
     <section className="actionDisplay">
-      <VotingForm/>
+      <VotingForm 
+        activeUser={props.activeUser} 
+        activeRepId={props.activeRepId}
+        activeBillId={props.activeBillId}
+        setUserDidVote={props.setUserDidVote}
+        />
     </section>
   );
 };

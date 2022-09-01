@@ -1,18 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 
 const BillData = (props) => {
-  const [bill, setBill] = useState({});
-
-  // note: need to move state UP, and pass bill data to votingForm.
-  useEffect(() => {
-    const getData = async () => {
-      const response = await fetch('http://localhost:8080/api/bills');
-      const data = await response.json();
-      setBill(data);
-    }
-    getData();
-  }, []);
-
+  const bill = props.activeBill;
   return (
     <article className="bill">
       <h2>{bill.number}: {bill.short_title}</h2>

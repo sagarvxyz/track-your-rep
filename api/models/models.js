@@ -122,7 +122,9 @@ const BillSchema = new Schema({
 const Bills = mongoose.model('bills', BillSchema);
 
 const UserVoteSchema = new Schema({ 
-  username: String,
+  userName: String,
+  repId: String,
+  billId: String,
   vote: String
 });
 /**
