@@ -114,4 +114,18 @@ dataController.getMemberVotes = async (req, res, next) => {
   }
 };
 
+dataController.getBillVote = async (req, res, next) => {
+  try {
+    const {repId, billId} = req.query;
+    const data = await models.MemberVotes.findOne({ member_id: repId, 'bill.bill_id': billId });
+    res.locals.memberVote = await data;
+    return next();
+  } catch (err) {
+    return next({
+      log: 'Error in dataController.getBillVote',
+      mesasge: err
+    })
+  }
+}
+
 module.exports = dataController;

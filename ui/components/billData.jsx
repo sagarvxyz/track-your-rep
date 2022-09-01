@@ -5,10 +5,11 @@ const BillData = (props) => {
   return (
     <article className="bill">
       <h2>{bill.number}: {bill.short_title}</h2>
-      <p><strong>Sponsored by: </strong>{bill.sponsor_title} {bill.sponsor} ({bill.sponsor_party}) of {bill.sponsor_state}</p>
-      <p><strong>Introduced:</strong> {bill.introduced_date}</p>
+      <p>
+        <em>Sponsored by {bill.sponsor_title} {bill.sponsor} ({bill.sponsor_party}) of {bill.sponsor_state} on {bill.introduced_date}</em>.
+      </p>
       <p>{bill.summary}</p>
-      <p><a href={bill.congressdotgov_url}>Read the bill here</a>.</p>
+      <p><a href={bill.congressdotgov_url} target="_blank">Read the bill here</a>.</p>
     </article>
   );
 };

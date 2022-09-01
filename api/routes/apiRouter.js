@@ -25,6 +25,12 @@ router.get('/votes', dataController.getMemberVotes, (req, res) => {
   res.status(200).end();
 })
 
+// NOTE: this should be merged into /votes route more cleanly
+router.get('/memberVote', dataController.getBillVote, (req, res) => {
+  console.log('Get /memberVote route complete');
+  res.status(200).send(res.locals.memberVote);
+})
+
 // post userVote to uservotes
 router.post('/userVote', dataController.postUserVotes, (req, res) => {
   console.log('Post /userVote route complete');

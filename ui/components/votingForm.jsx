@@ -19,13 +19,13 @@ const VotingForm = (props) => {
       body: JSON.stringify(body)
     })
 
-    props.setUserDidVote(true);
+    props.setUserVote(vote);
   }
 
   return(
     <div className="votingForm">
       <button className="voteYes" onClick={handleClick}>Yay</button>
-      <button className="voteNo">Nay</button>
+      <button className="voteNo" onClick={handleClick}>Nay</button>
     </div>
   )
 }

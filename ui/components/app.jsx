@@ -3,12 +3,12 @@ import { ActionDisplay } from './actionDisplay';
 import { DataDisplay } from './dataDisplay';
 
 const App = (props) => {
-
   /* STATE */
   const [activeUser, setActiveUser] = useState({});
   const [rep, setRep] = useState({});
   const [activeBill, setActiveBill] = useState({});
-  const [userDidVote, setUserDidVote] = useState(false);
+  const [prevBill, setPrevBill] = useState({});
+  const [userVote, setUserVote] = useState('');
 
   useEffect(() => setActiveUser('sagarvxyz'), []); // DEV NOTE: !hardcoded username
 
@@ -25,7 +25,7 @@ const App = (props) => {
     const getData = async () => {
       const response = await fetch('http://localhost:8080/api/bills'); // DEV NOTE: should pass in repID in body, AND update server route to query using it
       const data = await response.json();
-      setActiveBill(data);
+      setActiveBill(await data);
     }
     getData();
   }, []);
@@ -40,9 +40,13 @@ const App = (props) => {
         activeRepId={rep.id} 
         activeUser={activeUser} 
         activeBillId={activeBill.bill_id}
-        setUserDidVote={setUserDidVote}
+        setUserVote={setUserVote}
       />
-      <DataDisplay activeBill={activeBill}/>
+      <DataDisplay 
+        activeRepId={rep.id} 
+        activeBill={activeBill}
+        userVote={userVote}
+      />
     </div>
   );
 };
