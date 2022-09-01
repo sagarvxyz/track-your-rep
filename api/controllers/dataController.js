@@ -5,13 +5,49 @@ const dataController = {};
 const apiKey = { 'X-API-Key': 'jwAOJEIpja83U4txD9kLUVSqAWgfHGfplWDtRvLT' };
 
 /**
+ * Function collect's a user's vote to the userVote collection, along with the related ID.
+ * 
+ * DEV NOTE: UserID is currently hardcoded. Should be a stored in state as "active user" when user logs in.
+ */
+dataController.postUserVotes = async (req, res, next) => {
+  console.log('postUserVotes started');
+  try {
+    const doc = new models.UserVotes(req.body);
+    const saved = await doc.save();
+    return next();
+  } catch (err) {
+    return next({
+      log: 'Error in dataController.postUserVote',
+      message: err
+    })
+  }
+}
+
+/**
+ * Function retrieves the user's active representative.
+ * DEV NOTE: currently hardcoded, should retrieve from a user database.
+ */
+dataController.getUserRep = async (req, res, next) => {
+  try {
+    memberId = 'O000172'; // !hardcoded
+    const userMember = await models.HouseMembers.findOne({id: memberId});
+    res.locals.userRep = await userMember;
+    return next();
+  } catch (err) {
+    return next({
+      log: 'Error in dataController.getUserRep',
+      message: err
+    })
+  }
+};
+
+/**
  * Function retrieves the latest bill voted on by a specified rep from the database.
  */
 dataController.serveLatestBill = async (req, res, next) => {
   try {
-    const latestVote = await models.MemberVotes.findOne({},'bill.bill_uri',{
-      $sort: { date: -1 }
-    });
+    memberId = 'O000172'; // !hardcoded
+    const latestVote = await models.MemberVotes.findOne({},'bill', { $sort: {date: -1}});
     const billURI = await latestVote.bill.bill_uri;
     const query = await fetch(billURI, { headers: apiKey });
     const data = await query.json();

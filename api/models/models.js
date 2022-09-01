@@ -55,7 +55,7 @@ const HouseMemberSchema = new Schema({
 /**
  * Model for all active members of the house, contact info, and their ProPublica IDs. Built for the proPublica Congress API.
  */
-const HouseMembers = mongoose.model('houseMembers', HouseMemberSchema);
+const HouseMembers = mongoose.model('house_members', HouseMemberSchema);
 
 
 const MemberVoteSchema = new Schema({
@@ -78,7 +78,7 @@ const MemberVoteSchema = new Schema({
 /**
  * Model for representative's history of votes. Built for the proPublica Congress API. 
  */
-const MemberVotes = mongoose.model('memberVotes', MemberVoteSchema);
+const MemberVotes = mongoose.model('member_votes', MemberVoteSchema);
 
 const BillSchema = new Schema({
   bill_id: String,
@@ -121,8 +121,18 @@ const BillSchema = new Schema({
  */
 const Bills = mongoose.model('bills', BillSchema);
 
+const UserVoteSchema = new Schema({ 
+  username: String,
+  vote: String
+});
+/**
+ * Model for user submitted votes.
+ */
+const UserVotes = mongoose.model('user_votes', UserVoteSchema);
+
 module.exports = {
   HouseMembers,
   MemberVotes,
-  Bills
+  Bills,
+  UserVotes
 };

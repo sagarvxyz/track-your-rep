@@ -4,6 +4,7 @@ const dataController = require('../controllers/dataController');
 const Server = require('webpack-dev-server');
 const router = express.Router();
 
+
 // router.get('/', (req, res) => {
 //   res.status(200).end();
 // })
@@ -14,9 +15,20 @@ router.get('/bills', dataController.getRecentBills, dataController.serveLatestBi
   res.status(200).send(res.locals.latestBill);
 })
 
+router.get('/reps', dataController.getUserRep, (req, res) => {
+  console.log('GET /reps route complete');
+  res.status(200).send(res.locals.userRep);
+})
+
 router.get('/votes', dataController.getMemberVotes, (req, res) => {
   console.log('GET /votes route complete');
   res.status(200).end();
+})
+
+// post userVote to uservotes
+router.post('/userVote', dataController.postUserVotes, (req, res) => {
+  console.log('Post /userVote route complete');
+  res.status(201).end();
 })
 
 // initialize database
