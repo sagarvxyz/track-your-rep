@@ -13,6 +13,7 @@ body {
   margin: 0;
   font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   color: var(--primary);
+  background-color: var(--white);
 }
 header {
   grid-area: header;
