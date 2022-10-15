@@ -9,6 +9,9 @@ Parameters:
 Resources:
   FrontendBucket:
     Type: AWS::S3::Bucket
+    Properties:
+      BucketName: 'track-your-rep-frontend-bucket'
+
   # CloudFront Config: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cloudfront-distribution.html
   CDN:
     Type: AWS::CloudFront::Distribution
@@ -68,7 +71,15 @@ Resources:
             Resource: !Sub
               - 'arn:aws:s3:::${Bucket}/*'
               - Bucket: !Ref FrontendBucket
-
+          - Effect: Allow
+            Principal:
+              AWS:
+                - !Ref PipelineRole
+            Action:
+              - "s3:ListBucket"
+            Resource: !Sub
+              - 'arn:aws:s3:::${Bucket}'
+              - Bucket: !Ref FrontendBucket
 
   CloudFrontOriginAccessIdentity:
     Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
