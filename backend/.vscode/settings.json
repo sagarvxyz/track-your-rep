@@ -1,0 +1,10 @@
+{
+	"eslint.validate": [
+		"javascript",
+		"typescript",
+	],
+	"prettier.documentSelectors": ["**/*.js", "**/*.ts"],
+	"[astro]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	}
+}
