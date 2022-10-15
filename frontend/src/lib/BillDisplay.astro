@@ -1,0 +1,14 @@
+---
+const { bill } = Astro.props;
+---
+
+<h2>The Bill</h2>
+<ul>
+	{
+		Object.entries(bill).map(([key, val]) => (
+			<li>
+				{key}: {val}
+			</li>
+		))
+	}
+</ul>

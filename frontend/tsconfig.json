@@ -1,0 +1,15 @@
+{
+	"extends": "astro/tsconfigs/strict",
+	"compilerOptions": {
+		"types": ["astro/client"],
+		"outDir": "build",
+		"baseUrl": "./",
+		"paths": {
+			"@layouts/*": ["src/layouts/*"],
+			"@lib/*": ["src/lib/*"],
+			"@pages/*": ["src/pages/*"],
+			"@styles/*": ["src/styles/*"]
+		}
+	},
+	"exclude": ["node_modules"]
+}

@@ -1,0 +1,18 @@
+html {
+	--text: rgb(30, 30, 30);
+	--primary: rgb(10, 49, 97);
+	--secondary: rgb(179, 25, 66);
+}
+body {
+	font-size: 16px;
+	font-family: 'Merriweather', serif;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: 'Raleway', sans-serif;
+	text-transform: uppercase;
+}

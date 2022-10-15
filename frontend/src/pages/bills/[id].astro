@@ -1,0 +1,29 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+// import BillDisplay from '@lib/BillDisplay.astro';
+
+export async function getStaticPaths() {
+	// 	const res = await fetch('http://127.0.0.1:3000/api/bills/latest', {
+	// 		method: 'get',
+	// 	});
+	// 	const data: Record<string, string>[] = await res.json();
+	// 	return Object.values(data).map((bill) => {
+	// 		return {
+	// 			params: { id: bill.bill_id },
+	// 			props: { bill },
+	// 		};
+	// 	});
+	return [
+		{
+			params: { id: 'test' },
+		},
+	];
+}
+const { id } = Astro.params;
+// const { bill } = Astro.props;
+---
+
+<BaseLayout>
+	<p>{id}</p>
+	<!-- <BillDisplay {bill} /> -->
+</BaseLayout>
