@@ -1,0 +1,181 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'AWS configuration for Track Your Rep.'
+
+Parameters:
+  PipelineRole:
+    Type: String
+
+Resources:
+  FrontendBucket:
+    Type: AWS::S3::Bucket
+  # CloudFront Config: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cloudfront-distribution.html
+  CDN:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Origins:
+          - Id: FrontendBucket
+            DomainName: !GetAtt FrontendBucket.RegionalDomainName
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}'
+          - Id: ServerFunction
+            DomainName: !Sub '${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com'
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+        DefaultCacheBehavior:
+          TargetOriginId: FrontendBucket
+          ViewerProtocolPolicy: redirect-to-https
+          ForwardedValues:
+            QueryString: true
+        CacheBehaviors:
+          # proxies frontend -> backend routes at PathPattern
+          - TargetOriginId: ServerFunction
+            PathPattern: 'api/*'
+            DefaultTTL: 0
+            MinTTL: 0
+            MaxTTL: 0
+            ViewerProtocolPolicy: https-only
+            AllowedMethods: [GET, HEAD, OPTIONS, PUT, PATCH, POST, DELETE]
+            ForwardedValues:
+              QueryString: true
+        Enabled: true
+        DefaultRootObject: index.html
+
+  # Gives CDN read access to FrontendBucket
+  FrontendBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref FrontendBucket
+      PolicyDocument:
+        Id: CDNPolicy
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              CanonicalUser: !GetAtt CloudFrontOriginAccessIdentity.S3CanonicalUserId
+            Action: 's3:GetObject'
+            Resource: !Sub
+              - 'arn:aws:s3:::${Bucket}/*'
+              - Bucket: !Ref FrontendBucket 
+          - Effect: Allow
+            Principal:
+              AWS:
+                - !Ref PipelineRole
+            Action:
+              - "s3:PutObject"
+              - "s3:DeleteObject"
+            Resource: !Sub
+              - 'arn:aws:s3:::${Bucket}/*'
+              - Bucket: !Ref FrontendBucket
+
+
+  CloudFrontOriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: CloudFront access identity
+
+  ServerFunction:
+    Type: AWS::Serverless::Function
+    # Manage esbuild properties
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: false
+        Target: 'es2020'
+        Sourcemap: true
+        EntryPoints:
+          - router.ts
+    Properties:
+      CodeUri: 
+      Handler: router.router
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      Events:
+        GetBills:
+          Type: Api
+          Properties:
+            Path: /api/bills
+            Method: GET
+        PutBills:
+          Type: Api
+          Properties:
+            Path: /api/bills
+            Method: put
+        PatchBills:
+          Type: Api
+          Properties:
+            Path: /api/bills
+            Method: patch
+        GetVotes:
+          Type: Api
+          Properties:
+            Path: /api/votes
+            Method: get
+        PutVotes:
+          Type: Api
+          Properties:
+            Path: /api/votes
+            Method: put
+        GetUsers:
+          Type: Api
+          Properties:
+            Path: /api/users
+            Method: get
+        PutUsers:
+          Type: Api
+          Properties:
+            Path: /api/users
+            Method: put
+        PatchUsers:
+          Type: Api
+          Properties:
+            Path: /api/users
+            Method: patch
+        DeleteUsers:
+          Type: Api
+          Properties:
+            Path: /api/users
+            Method: delete
+
+  BillsTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+      TableName: bills_table
+
+  VotesTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+      TableName: votes_table
+
+  UsersTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+      TableName: users_table
+
+Outputs:
+  API:
+    Description: 'API Gateway endpoint URL for Track Your Rep'
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/api'
+
+  Website:
+    Value: !GetAtt CDN.DomainName
+
+  ServerFunction:
+    Description: 'ServerFunction Lambda ARN'
+    Value: !GetAtt ServerFunction.Arn
+
+  ServerFunctionIamRole:
+    Description: 'Implicit IAM Role created for ServerFunction Lambda'
+    Value: !GetAtt ServerFunctionRole.Arn

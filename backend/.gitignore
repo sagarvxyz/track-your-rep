@@ -1,0 +1,5 @@
+.aws-sam
+.husky
+node_modules
+
+.env
