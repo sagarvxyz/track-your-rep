@@ -14,7 +14,9 @@
 	},
 	"homepage": "https://github.com/sagarvxyz/track-your-rep#readme",
 	"dependencies": {
-		"esbuild": "^0.14.14"
+		"aws-sdk": "^2.1233.0",
+		"esbuild": "^0.14.14",
+		"node-fetch": "^3.2.10"
 	},
 	"scripts": {
 		"build": "sam build",

@@ -4,7 +4,7 @@
 	"printWidth": 80,
 	"singleQuote": true,
 	"arrowParens": "always",
-	"proseWrap": "always",
+	"proseWrap":"preserve",
 	"bracketSameLine": true,
 	"bracketSpacing": true,
 	"embeddedLanguageFormatting": "auto",

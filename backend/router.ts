@@ -1,10 +1,11 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { getBills } from './handlers/readBills';
-import { putBills, patchBills } from './handlers/writeBills';
-import { getVotes } from './handlers/readVotes';
-import { putVotes } from './handlers/writeVotes';
-import { getUsers } from './handlers/readUsers';
-import { putUsers, patchUsers, deleteUsers } from './handlers/writeUsers';
+// import { getBills } from './handlers/readBills';
+import { fetchLatestBills } from '@handlers/fetchBills';
+import { putBills, patchBills } from '@handlers/writeBills';
+import { getVotes } from '@handlers/readVotes';
+import { putVotes } from '@handlers/writeVotes';
+import { getUsers } from '@handlers/readUsers';
+import { putUsers, patchUsers, deleteUsers } from '@handlers/writeUsers';
 /**
  * Routes incoming HTTP requests to myriad functions. Note: This is only
  * necessary while all functions are wrapped in a single lambda instance.
@@ -17,7 +18,8 @@ export const router = async (
 	try {
 		switch (`${event.httpMethod} ${event.path}`) {
 			case 'GET /api/bills':
-				return getBills(event);
+				return fetchLatestBills(); // temporary test
+				// return getBills(event);
 				break;
 			case 'PUT /api/bills':
 				return putBills(event);
@@ -46,14 +48,19 @@ export const router = async (
 			default:
 				return {
 					statusCode: 404,
-					body: JSON.stringify({ message: 'page does not exist' }),
+					body: JSON.stringify({
+						message: 'router: page does not exist',
+					}),
 				};
 		}
 	} catch (err: unknown) {
 		return {
 			statusCode: 500,
 			body: JSON.stringify({
-				message: err instanceof Error ? err.message : 'unknown server error',
+				message:
+					err instanceof Error
+						? `router: ${err.message}`
+						: 'router: unknown server error',
 			}),
 		};
 	}
