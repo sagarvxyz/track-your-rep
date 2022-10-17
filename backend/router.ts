@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 // import { getBills } from './handlers/readBills';
-import { fetchLatestBills } from '@handlers/fetchBills';
+import { getLatestBills } from '@lib/getBills';
 import { putBills, patchBills } from '@handlers/writeBills';
 import { getVotes } from '@handlers/readVotes';
 import { putVotes } from '@handlers/writeVotes';
@@ -12,13 +12,14 @@ import { putUsers, patchUsers, deleteUsers } from '@handlers/writeUsers';
  * @param event
  * @returns APIGatewayProxyResult
  */
-export const router = async (
+
+export async function router(
 	event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+): Promise<APIGatewayProxyResult> {
 	try {
 		switch (`${event.httpMethod} ${event.path}`) {
 			case 'GET /api/bills':
-				return fetchLatestBills(); // temporary test
+				return getLatestBills(); // temporary test
 				// return getBills(event);
 				break;
 			case 'PUT /api/bills':
@@ -64,4 +65,4 @@ export const router = async (
 			}),
 		};
 	}
-};
+}

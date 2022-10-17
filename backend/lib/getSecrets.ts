@@ -1,3 +1,4 @@
+import { APIGatewayProxyResult } from 'aws-lambda';
 import { SecretsManager } from 'aws-sdk';
 
 /**
@@ -8,13 +9,24 @@ import { SecretsManager } from 'aws-sdk';
  */
 export const getSecrets = async (
 	SecretId: string
-): Promise<SecretsManager.GetSecretValueResponse | undefined> => {
+): Promise<APIGatewayProxyResult> => {
 	try {
 		const env = new SecretsManager();
 		const params = { SecretId };
 		const secret = await env.getSecretValue(params).promise();
-		return secret;
+		return {
+			statusCode: 200,
+			body: JSON.stringify(secret),
+		};
 	} catch (err: unknown) {
-		console.log(err);
+		return {
+			statusCode: 500,
+			body: JSON.stringify({
+				message:
+					err instanceof Error
+						? `getSecrets: ${err.message}`
+						: 'getSecrets: some error happened',
+			}),
+		};
 	}
 };

@@ -8,19 +8,19 @@ interface ProPublicaSecret {
 interface ProPublicaResponse {
 	status: string;
 	copyright: string;
-	results: ProPublicaResponseResult[];
+	results: ProPublicaResponseResults[];
 }
 
 /** The results attribute of a response from the ProPublica API. */
-interface ProPublicaResponseResult {
+interface ProPublicaResponseResults {
 	congress?: 115 | 116 | 117;
 	chamber?: 'House' | 'Senate';
 	date?: string;
 	id?: string;
 	member_uri?: string;
 	name?: string;
-	num_results: number;
-	offset: number;
+	num_results?: number;
+	offset?: number;
 	subject?: string;
 	bills?: ProPublicaBill[];
 }

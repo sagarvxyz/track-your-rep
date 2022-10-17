@@ -7,12 +7,14 @@ import { getSecrets } from '@lib/getSecrets';
  * API.
  * @returns HTTP response or error
  */
-export const fetchLatestBills = async (): Promise<APIGatewayProxyResult> => {
+export const getLatestBills = async (): Promise<APIGatewayProxyResult> => {
 	try {
-		const secret = await getSecrets('ProPublicaApi');
+		const secretResponse = await getSecrets('ProPublicaApi');
+		const secret = JSON.parse(secretResponse.body);
 		if (!secret || !secret.SecretString) {
-			throw Error('No secret found');
+			throw Error('no secret found');
 		}
+
 		const secretString: ProPublicaSecret = JSON.parse(secret.SecretString);
 		const { ProPublicaApiKey, ProPublicaApiUrl } = secretString;
 

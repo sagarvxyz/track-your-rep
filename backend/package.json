@@ -14,13 +14,15 @@
 	},
 	"homepage": "https://github.com/sagarvxyz/track-your-rep#readme",
 	"dependencies": {
+		"@aws-sdk/client-dynamodb": "^3.188.0",
 		"aws-sdk": "^2.1233.0",
 		"esbuild": "^0.14.14",
 		"node-fetch": "^3.2.10"
 	},
 	"scripts": {
-		"build": "sam build",
-		"dev": "sam build && sam local start-api",
+		"build:db": "docker-compose up -d && ./createTables.sh",
+		"build": "sam build && if(! docker stats --no-stream); then run build:db; fi",
+		"dev": "npm run build && sam local start-api",
 		"compile": "tsc"
 	},
 	"devDependencies": {
