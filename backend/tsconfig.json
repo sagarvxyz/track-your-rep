@@ -12,8 +12,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"baseUrl": "./",
 		"paths": {
-			"@handlers/*": ["handlers/*"],
-			"@lib/*": ["lib/*"]
+			"@functions/*": ["functions/*"]
 		}
 	},
 	"exclude": ["node_modules"]

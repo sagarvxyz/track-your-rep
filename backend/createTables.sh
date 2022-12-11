@@ -4,22 +4,25 @@
 # https://stackoverflow.com/questions/12276507/run-script-on-mac-prompt-permission-denied
 
 AWS_PAGER="" aws dynamodb create-table \
---table-name BillsTable \
+--table-name bills_table \
 --attribute-definitions AttributeName=id,AttributeType=S \
 --key-schema AttributeName=id,KeyType=HASH \
---endpoint-url http://localhost:8000 \
---billing-mode PAY_PER_REQUEST
+--endpoint-url http://localhost:3000 \
+--billing-mode PAY_PER_REQUEST \
+--region us-east-1
 
 AWS_PAGER="" aws dynamodb create-table \
---table-name VotesTable \
+--table-name votes_table \
 --attribute-definitions AttributeName=id,AttributeType=S \
 --key-schema AttributeName=id,KeyType=HASH \
---endpoint-url http://localhost:8000 \
---billing-mode PAY_PER_REQUEST
+--endpoint-url http://localhost:3000 \
+--billing-mode PAY_PER_REQUEST \
+--region us-east-1
 
 AWS_PAGER="" aws dynamodb create-table \
---table-name UsersTable \
+--table-name users_table \
 --attribute-definitions AttributeName=id,AttributeType=S \
 --key-schema AttributeName=id,KeyType=HASH \
---endpoint-url http://localhost:8000 \
---billing-mode PAY_PER_REQUEST
+--endpoint-url http://localhost:3000 \
+--billing-mode PAY_PER_REQUEST \
+--region us-east-1

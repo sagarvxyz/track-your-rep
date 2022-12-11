@@ -1,10 +1,12 @@
 import fetch from 'node-fetch';
 import { APIGatewayProxyResult } from 'aws-lambda';
-import { getSecrets } from '@lib/getSecrets';
+import { getSecrets } from '@functions/getSecrets';
 
 /**
  * Get the latest bills introduced in the House from the ProPublica Congress
  * API.
+ * Note: this should be modified to accept an integer argument, and use it to
+ * retrieve that "page" of responses.
  * @returns HTTP response or error
  */
 export const getLatestBills = async (): Promise<APIGatewayProxyResult> => {
@@ -34,7 +36,7 @@ export const getLatestBills = async (): Promise<APIGatewayProxyResult> => {
 		return {
 			statusCode: 200,
 			body: JSON.stringify({
-				data,
+				...data,
 			}),
 		};
 	} catch (err) {

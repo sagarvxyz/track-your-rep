@@ -1,11 +1,11 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-// import { getBills } from './handlers/readBills';
-import { getLatestBills } from '@lib/getBills';
-import { putBills, patchBills } from '@handlers/writeBills';
-import { getVotes } from '@handlers/readVotes';
-import { putVotes } from '@handlers/writeVotes';
-import { getUsers } from '@handlers/readUsers';
-import { putUsers, patchUsers, deleteUsers } from '@handlers/writeUsers';
+import { getBills } from '@functions/readBills';
+import { putBills, patchBills } from '@functions/writeBills';
+import { getVotes } from '@functions/readVotes';
+import { putVotes } from '@functions/writeVotes';
+import { getUsers } from '@functions/readUsers';
+import { putUsers, patchUsers, deleteUsers } from '@functions/writeUsers';
+import { getLatestBills } from '@functions/getBillsProPublica';
 /**
  * Routes incoming HTTP requests to myriad functions. Note: This is only
  * necessary while all functions are wrapped in a single lambda instance.
@@ -19,8 +19,7 @@ export async function router(
 	try {
 		switch (`${event.httpMethod} ${event.path}`) {
 			case 'GET /api/bills':
-				return getLatestBills(); // temporary test
-				// return getBills(event);
+				return getBills(event);
 				break;
 			case 'PUT /api/bills':
 				return putBills(event);
