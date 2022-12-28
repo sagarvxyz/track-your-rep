@@ -4,29 +4,21 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 // import { putVotes } from '@functions/writeVotes';
 // import { getUsers } from '@functions/readUsers';
 // import { putUsers, patchUsers, deleteUsers } from '@functions/writeUsers';
-import { updateBills } from '@functions/updateBills';
-import { getUpdatedBillsPage } from '@functions/proPublica/getUpdatedBills';
+import { updateBills } from 'src/server/bills/updateBills';
+import { getUpdatedBillsPage } from 'src/server/bills/getPPUpdatedBillsPage';
+import { getBills } from './bills/getBills';
 /**
  * Routes incoming HTTP requests to myriad functions. Note: This is only
  * necessary while all functions are wrapped in a single lambda instance.
- * @param event
- * @returns APIGatewayProxyResult
  */
-
 export async function router(
 	event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> {
 	try {
 		switch (`${event.httpMethod} ${event.path}`) {
-			case 'GET /api/bills':
-				// return getBills(event);
-				// const offset = Number(event.queryStringParameters.offset) || 0;
-				const result = await getUpdatedBillsPage();
-				return {
-					statusCode: 200,
-					body: JSON.stringify(result),
-				};
-				break;
+			// case 'GET /api/bills':
+			// 	return getBills(event);
+			// 	break;
 			case 'GET /api/bills/update':
 				return updateBills();
 				break;

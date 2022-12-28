@@ -1,5 +1,5 @@
-import { getErrorMessage } from '@functions/misc/getErrorMessage';
-import { getSecrets } from '@functions/misc/getSecrets';
+import { getErrorMessage } from '../helper/getErrorMessage';
+import { getSecrets } from '../helper/getSecrets';
 import fetch from 'node-fetch';
 
 /**
@@ -39,10 +39,7 @@ export async function getUpdatedBillsPage(offset = 0) {
 		return results;
 	} catch (error) {
 		const message = getErrorMessage(error, 'getProPublicaActiveBills');
-		return {
-			statusCode: 500,
-			body: JSON.stringify({ message }),
-		};
+		console.log(message);
 	}
 }
 

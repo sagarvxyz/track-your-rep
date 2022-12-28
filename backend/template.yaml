@@ -87,7 +87,7 @@ Resources:
       CloudFrontOriginAccessIdentityConfig:
         Comment: CloudFront access identity
 
-  ServerFunction:
+  Server:
     Type: AWS::Serverless::Function
     # Manage esbuild properties
     Metadata:
@@ -97,12 +97,12 @@ Resources:
         Target: 'es2020'
         # Sourcemap: true
         EntryPoints:
-          - server.ts
+          - src/server/index.ts
     Properties:
       CodeUri: ''
-      Handler: server.router
+      Handler: index.router
       Runtime: nodejs18.x
-      Timeout: 1000
+      Timeout: 100
       Architectures:
         - x86_64
       Events:
