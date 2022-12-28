@@ -1,12 +1,13 @@
-import { getSecrets } from '@functions/misc/getSecrets';
-import { URLSearchParams } from 'url';
 import { getErrorMessage } from '@functions/misc/getErrorMessage';
+import { getSecrets } from '@functions/misc/getSecrets';
+import fetch from 'node-fetch';
 
 /**
- * Get the latest bills introduced in the House from the ProPublica Congress
+ * Get all bills with updates from now to the input minDate from the ProPublica Congress
  * API.
+ * Note: need to add logic to handle dates
  */
-export async function getProPublicaActiveBills(offset = 0) {
+export async function getUpdatedBillsPage(offset = 0) {
 	try {
 		if (offset % 20 > 0) {
 			throw Error('input must be an integer of 0 or a multiple of 20');
@@ -20,7 +21,7 @@ export async function getProPublicaActiveBills(offset = 0) {
 			offset: `${offset}`,
 		}).toString();
 		const response = await fetch(
-			ProPublicaApiUrl + '/117/house/bills/active.json?' + params,
+			ProPublicaApiUrl + '/117/house/bills/updated.json?' + params,
 			{
 				headers: {
 					'X-Api-Key': ProPublicaApiKey,
@@ -28,15 +29,20 @@ export async function getProPublicaActiveBills(offset = 0) {
 				},
 			}
 		);
-		const data = await response.json();
+		const data: ProPublicaResponse =
+			(await response.json()) as ProPublicaResponse;
 		if (!data || !data.results) {
 			throw Error('incorrect response shape');
 		}
-		const results: ProPublicaResponseResults = data.results;
+		const results: ProPublicaResponseResults = data.results[0];
+		if (!results) throw Error('no results');
 		return results;
 	} catch (error) {
 		const message = getErrorMessage(error, 'getProPublicaActiveBills');
-		reportError(message);
+		return {
+			statusCode: 500,
+			body: JSON.stringify({ message }),
+		};
 	}
 }
 

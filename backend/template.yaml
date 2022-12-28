@@ -97,30 +97,25 @@ Resources:
         Target: 'es2020'
         # Sourcemap: true
         EntryPoints:
-          - router.ts
+          - server.ts
     Properties:
       CodeUri: ''
       Handler: server.router
       Runtime: nodejs18.x
-      Timeout: 10
+      Timeout: 1000
       Architectures:
         - x86_64
       Events:
+        UpdateBills:
+          Type: Api
+          Properties:
+            Path: /api/bills/update
+            Method: GET
         GetBills:
           Type: Api
           Properties:
             Path: /api/bills
             Method: GET
-        PutBills:
-          Type: Api
-          Properties:
-            Path: /api/bills
-            Method: put
-        PatchBills:
-          Type: Api
-          Properties:
-            Path: /api/bills
-            Method: patch
         GetVotes:
           Type: Api
           Properties:

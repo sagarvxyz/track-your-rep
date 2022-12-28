@@ -1,11 +1,11 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { getBills } from '@functions/readBills';
-import { putBills, patchBills } from '@functions/writeBills';
-import { getVotes } from '@functions/readVotes';
-import { putVotes } from '@functions/writeVotes';
-import { getUsers } from '@functions/readUsers';
-import { putUsers, patchUsers, deleteUsers } from '@functions/writeUsers';
-import { getLatestBills } from '@functions/getBillsProPublica';
+// import { getBills } from '@functions/readBills';
+// import { getVotes } from '@functions/readVotes';
+// import { putVotes } from '@functions/writeVotes';
+// import { getUsers } from '@functions/readUsers';
+// import { putUsers, patchUsers, deleteUsers } from '@functions/writeUsers';
+import { updateBills } from '@functions/updateBills';
+import { getUpdatedBillsPage } from '@functions/proPublica/getUpdatedBills';
 /**
  * Routes incoming HTTP requests to myriad functions. Note: This is only
  * necessary while all functions are wrapped in a single lambda instance.
@@ -19,32 +19,35 @@ export async function router(
 	try {
 		switch (`${event.httpMethod} ${event.path}`) {
 			case 'GET /api/bills':
-				return getBills(event);
+				// return getBills(event);
+				// const offset = Number(event.queryStringParameters.offset) || 0;
+				const result = await getUpdatedBillsPage();
+				return {
+					statusCode: 200,
+					body: JSON.stringify(result),
+				};
 				break;
-			case 'PUT /api/bills':
-				return putBills(event);
+			case 'GET /api/bills/update':
+				return updateBills();
 				break;
-			case 'PATCH /api/bills':
-				return patchBills(event);
-				break;
-			case 'GET /api/votes':
-				return getVotes(event);
-				break;
-			case 'PUT /api/votes':
-				return putVotes(event);
-				break;
-			case 'GET /api/users':
-				return getUsers(event);
-				break;
-			case 'PUT /api/users':
-				return putUsers(event);
-				break;
-			case 'PATCH /api/users':
-				return patchUsers(event);
-				break;
-			case 'DELETE /api/users':
-				return deleteUsers(event);
-				break;
+			// case 'GET /api/votes':
+			// 	return getVotes(event);
+			// 	break;
+			// case 'PUT /api/votes':
+			// 	return putVotes(event);
+			// 	break;
+			// case 'GET /api/users':
+			// 	return getUsers(event);
+			// 	break;
+			// case 'PUT /api/users':
+			// 	return putUsers(event);
+			// 	break;
+			// case 'PATCH /api/users':
+			// 	return patchUsers(event);
+			// 	break;
+			// case 'DELETE /api/users':
+			// 	return deleteUsers(event);
+			// 	break;
 			default:
 				return {
 					statusCode: 404,
