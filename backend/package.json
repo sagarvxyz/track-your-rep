@@ -2,7 +2,7 @@
 	"name": "track-your-rep-backend",
 	"version": "0.1.0",
 	"description": "Track and engage your elected reps in Congress.",
-	"main": "router.ts",
+	"main": "server.ts",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/sagarvxyz/track-your-rep.git"
@@ -21,7 +21,7 @@
 	},
 	"scripts": {
 		"build:db": "docker-compose up -d && ./createTables.sh",
-		"build": "sam build && if(! docker stats --no-stream); then run build:db; fi",
+		"build": "sam build && docker-compose up -d",
 		"dev": "npm run build && sam local start-api",
 		"compile": "tsc"
 	},
