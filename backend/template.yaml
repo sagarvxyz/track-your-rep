@@ -100,8 +100,8 @@ Resources:
           - router.ts
     Properties:
       CodeUri: ''
-      Handler: router.router
-      Runtime: nodejs16.x
+      Handler: server.router
+      Runtime: nodejs18.x
       Timeout: 10
       Architectures:
         - x86_64
