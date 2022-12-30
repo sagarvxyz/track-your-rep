@@ -1,4 +1,4 @@
-import { getErrorMessage } from '../helper/getErrorMessage';
+import { handleError } from '../helper/handleError';
 import { getSecrets } from '../helper/getSecrets';
 import fetch from 'node-fetch';
 
@@ -7,7 +7,7 @@ import fetch from 'node-fetch';
  * API.
  * Note: need to add logic to handle dates
  */
-export async function getUpdatedBillsPage(offset = 0) {
+export async function getPPUpdatedBillsPage(offset = 0) {
 	try {
 		if (offset % 20 > 0) {
 			throw Error('input must be an integer of 0 or a multiple of 20');
@@ -38,8 +38,7 @@ export async function getUpdatedBillsPage(offset = 0) {
 		if (!results) throw Error('no results');
 		return results;
 	} catch (error) {
-		const message = getErrorMessage(error, 'getProPublicaActiveBills');
-		console.log(message);
+		return handleError(error, getUpdatedBillsPage.name);
 	}
 }
 
@@ -52,7 +51,6 @@ async function getProPublicaSecret() {
 		const secretString: ProPublicaSecret = JSON.parse(secret.SecretString);
 		return secretString;
 	} catch (error) {
-		const message = getErrorMessage(error);
-		reportError(message);
+		return handleError(error, getProPublicaSecret.name);
 	}
 }

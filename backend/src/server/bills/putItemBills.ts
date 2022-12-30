@@ -4,7 +4,7 @@ import {
 	PutItemCommand,
 } from '@aws-sdk/client-dynamodb';
 import { getDynamoDBConfig } from '../helper/devConfig';
-import { getErrorMessage } from '../helper/getErrorMessage';
+import { handleError } from '../helper/handleError';
 
 export async function putItemBills(bills: ProPublicaBill[]) {
 	try {
@@ -27,9 +27,8 @@ export async function putItemBills(bills: ProPublicaBill[]) {
 				}
 			}
 		}
-		console.log('putItemBills completed');
+		console.log('putItemBills success');
 	} catch (error) {
-		const message = getErrorMessage(error, putItemBills.name);
-		console.log(message);
+		return handleError(error, putItemBills.name);
 	}
 }

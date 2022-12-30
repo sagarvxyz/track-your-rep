@@ -5,7 +5,6 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 // import { getUsers } from '@functions/readUsers';
 // import { putUsers, patchUsers, deleteUsers } from '@functions/writeUsers';
 import { updateBills } from 'src/server/bills/updateBills';
-import { getUpdatedBillsPage } from 'src/server/bills/getPPUpdatedBillsPage';
 import { getBills } from './bills/getBills';
 /**
  * Routes incoming HTTP requests to myriad functions. Note: This is only
@@ -16,11 +15,11 @@ export async function router(
 ): Promise<APIGatewayProxyResult> {
 	try {
 		switch (`${event.httpMethod} ${event.path}`) {
-			// case 'GET /api/bills':
-			// 	return getBills(event);
-			// 	break;
+			case 'GET /api/bills':
+				return getBills(event);
+				break;
 			case 'GET /api/bills/update':
-				return updateBills();
+				return updateBills(event);
 				break;
 			// case 'GET /api/votes':
 			// 	return getVotes(event);
