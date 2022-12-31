@@ -4,7 +4,7 @@
 	"description": "Track and engage your elected reps in Congress.",
 	"main": "index.astro",
 	"scripts": {
-		"dev": "astro dev",
+		"dev": "astro dev & npm --prefix ../backend run dev",
 		"start": "astro dev",
 		"build": "astro check && tsc --noEmit && astro build",
 		"preview": "astro preview"

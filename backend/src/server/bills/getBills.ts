@@ -6,6 +6,7 @@ import {
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import { getDynamoDBConfig } from '../helper/devConfig';
 import { lambdaResponse } from '../helper/lambdaResponse';
+import { readQueryItems } from '../helper/readQueryItems';
 
 /** Get bill data by bill_id from the database. */
 export async function getBills(event: APIGatewayProxyEvent) {
@@ -27,8 +28,12 @@ export async function getBills(event: APIGatewayProxyEvent) {
 		};
 		const command = new QueryCommand(input);
 		const response = await client.send(command);
-		const result = { results: response.Items };
-		return lambdaResponse(result, 200);
+		let data: Record<string, any>[] = [];
+		if (response.Items) {
+			data = readQueryItems(response);
+		}
+		const results = { results: data };
+		return lambdaResponse(results, 200);
 	} catch (error) {
 		return lambdaResponse(error, 500);
 	}

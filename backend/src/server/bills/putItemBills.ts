@@ -4,6 +4,7 @@ import {
 	PutItemCommand,
 } from '@aws-sdk/client-dynamodb';
 import { getDynamoDBConfig } from '../helper/devConfig';
+import { getAttributeValue } from '../helper/getAttributeValue';
 import { handleError } from '../helper/handleError';
 
 export async function putItemBills(bills: ProPublicaBill[]) {
@@ -14,9 +15,13 @@ export async function putItemBills(bills: ProPublicaBill[]) {
 				const Item: Record<string, AttributeValue> = {
 					id: { S: `${bill.bill_id}` },
 				};
-				for (const [key, val] of Object.entries(bill)) {
-					const cleanVal = typeof val !== 'string' ? JSON.stringify(val) : val;
-					Item[key] = { S: cleanVal };
+
+				for (const [key, value] of Object.entries(bill)) {
+					if (typeof key !== 'string') continue;
+					const attribute = getAttributeValue(value);
+					const record: Record<string, Record<string, AttributeValue>> = {};
+					record[key] = attribute;
+					Object.assign(Item, record);
 				}
 				if (Object.keys(Item).length > 1) {
 					const command = new PutItemCommand({
