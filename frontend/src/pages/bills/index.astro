@@ -1,25 +1,26 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-// import BillDisplay from '@lib/BillDisplay.astro';
+import { getDevConfig } from '@lib/devConfig';
 
-// const res = await fetch('/api/bills/latest', {
-// 	method: 'get',
-// });
-// const data = await res.json();
-
-// const bills = Object.values(data);
+const url = getDevConfig('url');
+const queryString = new URLSearchParams({
+	type: 'all',
+}).toString();
+const response = await fetch(url + '/api/bills/list?' + queryString, {
+	method: 'get',
+});
+const data = await response.json();
+const bills: Record<string, any>[] = data.results;
 ---
 
 <BaseLayout>
 	<ul>
-		<!-- {
-			bills.map((bill: any) => (
+		{
+			bills.map((bill) => (
 				<li>
-					<a href={bill.bill_id}>
-						{bill.bill_slug}: {bill.short_title}
-					</a>
+					<a href={'/bills/' + bill.bill_id}>{bill.bill_id}</a>
 				</li>
 			))
-		} -->
+		}
 	</ul>
 </BaseLayout>

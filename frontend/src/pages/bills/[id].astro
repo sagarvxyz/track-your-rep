@@ -5,15 +5,14 @@ import { getDevConfig } from '@lib/devConfig';
 
 export async function getStaticPaths() {
 	const url = getDevConfig('url');
-	const testQueryString = new URLSearchParams({
-		bill_id: 'hr7925-117',
-	}).toString();
-	const response = await fetch(`${url}/api/bills?${testQueryString}`, {
+	const query = new URLSearchParams({ type: 'all' }).toString();
+	const response = await fetch(`${url}/api/bills/list?${query}`, {
 		method: 'get',
 	});
 	const data = await response.json();
-	const bills = data.results;
-	return Object.values(bills).map((bill) => {
+	const bills: Record<string, any>[] = data.results;
+
+	return bills.map((bill) => {
 		return {
 			params: { id: bill.bill_id },
 			props: { bill },
