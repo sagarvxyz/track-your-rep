@@ -6,7 +6,7 @@ export function readQueryItems(input: QueryCommandOutput) {
 		throw Error('invalid input, missing Items');
 	}
 	const items = input.Items;
-	const results: Record<string, any> = [];
+	const results: Record<string, any>[] = [];
 	for (const item of items) {
 		if (!item.id) continue;
 		const result = readAttributeValues(item);

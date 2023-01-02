@@ -116,37 +116,11 @@ Resources:
           Properties:
             Path: /api/bills
             Method: GET
-        GetVotes:
+        GetBillsList:
           Type: Api
           Properties:
-            Path: /api/votes
-            Method: get
-        PutVotes:
-          Type: Api
-          Properties:
-            Path: /api/votes
-            Method: put
-        GetUsers:
-          Type: Api
-          Properties:
-            Path: /api/users
-            Method: get
-        PutUsers:
-          Type: Api
-          Properties:
-            Path: /api/users
-            Method: put
-        PatchUsers:
-          Type: Api
-          Properties:
-            Path: /api/users
-            Method: patch
-        DeleteUsers:
-          Type: Api
-          Properties:
-            Path: /api/users
-            Method: delete
-
+            Path: /api/bills/list
+            Method: GET
   BillsTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
